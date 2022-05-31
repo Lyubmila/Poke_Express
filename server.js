@@ -7,6 +7,10 @@ const app = express()
 
 const PORT = 3000
 
+//setup view engine
+app.set('view engine', 'ejs')
+app.set('views', './views')
+
 //root routs
 app.get('/', (req, res) =>{      
     //console.log('running...');   
@@ -14,7 +18,8 @@ app.get('/', (req, res) =>{
 })
 
 app.get('/pokemon', (req, res) =>{
-    res.send(pokemon)
+    //res.send(pokemon)
+    res.render('Index')
 })
 
 //app listener
