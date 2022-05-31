@@ -22,6 +22,10 @@ app.get('/pokemon', (req, res) =>{
     res.render('Index', {data: pokemon, pageTitle: 'Pokemon Page'})
 })
 
+app.get('/pokemon/:id', (req, res) =>{
+    res.send(req.params.id)
+})
+
 //app listener
 app.listen(PORT, () =>{
     console.log(`Server is running on port: ${PORT}`);
