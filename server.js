@@ -20,10 +20,12 @@ app.get('/', (req, res) =>{
 app.get('/pokemon', (req, res) =>{
     //res.send(pokemon)
     res.render('Index', {data: pokemon, pageTitle: 'Pokemon Page'})
+    
 })
 
 app.get('/pokemon/:id', (req, res) =>{
-    res.send(req.params.id)
+    //res.send(req.params.id)
+    res.render('Show', {data: pokemon, index: req.params.id})
 })
 
 //app listener
