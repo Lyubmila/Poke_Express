@@ -19,7 +19,7 @@ app.get('/', (req, res) =>{
 
 app.get('/pokemon', (req, res) =>{
     //res.send(pokemon)
-    res.render('Index')
+    res.render('Index', {data: pokemon, pageTitle: 'Pokemon Page'})
 })
 
 //app listener
