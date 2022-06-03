@@ -19,10 +19,10 @@ const PORT = 3000
 //     next()      //got to the next middleware or to the responce
 // })
 
-//JSON Middleware
-app.use(express.json())
+//JSON Middleware 
+app.use(express.json())     //parse the req into json
 //if don't need read data from the url
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({extended: false})) //parse into javascript
 
 //setup view engine
 app.set('view engine', 'ejs')
@@ -34,12 +34,25 @@ app.get('/', (req, res) =>{
     res.send('Welcome to the Pokemon App!')
 })
 
-app.get('/pokemon', (req, res) =>{
+app.get('/pokemon', async (req, res) =>{
     //res.send(pokemonData)
-    res.render('Index', {pokemonData: pokemonData, 
+    try {
+
+        // fetch data from the db
+    const pokemons = await PokemonModel.find();
+    // console.log(pokemons);
+    // console.log(pokemons.forEach(pokemon => consolr.log(pokemon._id)));
+           
+
+    res.render('Index', {
+        pokemonData: pokemons, 
         pageTitle: 'Pokemon Page', 
-        pageHeader: 'See All The Pokemon!'}) //instent pokemonData:pokemonData can be used only key pokemonData
-    
+        pageHeader: 'See All The Pokemon!'  //instent pokemonData:pokemonData can be used only key pokemonData
+        })  
+
+    }   catch (error) {
+        console.log(error);
+    } 
 })
 
 app.get('/pokemon/new', (req, res) =>{
@@ -50,31 +63,43 @@ app.get('/pokemon/new', (req, res) =>{
 })
 
 //* POST REQUEST HANDLER
-app.post('/pokemon', (req, res) => {
+app.post('/pokemon', async (req, res) => {
     //console.log(req.body);
     const newPokemon = req.body // create a newPokemon variable
+
     // add a img property to the object
-    newPokemon.img = `http://img.pokemondb.net/artwork/${req.body.name}`
+    newPokemon.img = `http://img.pokemondb.net/artwork/${req.body.name.toLowerCase()}`
     console.log('new pokemon=>', newPokemon);
     //pokemonData.push(req.body)
-    //res.redirect('/pokemon')
+    
 
      //* Save the new pokemon to the db
      await PokemonModel.create(newPokemon, (error, result) => {
         if (error) {
             console.log(error)
         }
-
         console.log(result);
     })
+     res.redirect('/pokemon')
 })
 
-app.get('/pokemon/:id', (req, res) =>{
-    //res.send(req.params.id)
-    res.render('Show', {index: pokemonData[req.params.id], 
-        //index: req.params.id, 
-        pageTitle: 'Details', 
-        pageHeader: "Gotta Catch 'Em All"})
+app.get('/pokemon/:id', async (req, res) =>{
+    
+    try {
+        //res.send(req.params.id)
+        const pokemon = await PokemonModel.findById(req.params.id)
+        console.log(pokemon);
+
+        res.render('Show', {
+            //index: pokemonData[req.params.id], 
+            index: pokemon,
+            //index: req.params.id, 
+            pageTitle: 'Details', 
+            pageHeader: "Gotta Catch 'Em All"
+        })
+    } catch (error) {
+        console.log(error);
+    } 
 })
 
 

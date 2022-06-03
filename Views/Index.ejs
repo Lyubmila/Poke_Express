@@ -7,7 +7,7 @@
     <title><%= pageTitle%></title>
 </head>
 <body>
-    <a href="/pokemon/new">Create New Pokemon</a>
+    
     <h1><%= pageHeader %></h1>
 
     <a href="/pokemon/new">Create New Pokemon</a>
@@ -21,9 +21,9 @@
 
             <img src =  <%=` ${pokemon.img}.jpg` %>  width ="400" height="300" > <br>
 
-            <a href=<%=`/pokemon/${index}`%>> Click Me! </a>
+            <!-- <a href=<%=`/pokemon/${index}`%>> Click Me! </a> -->
 
-            <!-- <a href='/pokemon/<%= index %>' >Details</a> -->
+            <a href='/pokemon/<%= pokemon._id %>' >Details</a>
 
 
         </li>
